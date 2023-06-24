@@ -10,6 +10,8 @@ import subprocess
 
 APP_VERSION = "v0.0.1"
 
+javaversion=0
+
 def selectPath():
     path_ = askdirectory()
     if path_:
@@ -61,11 +63,18 @@ def callback(url):
     webbrowser.open_new(url)
 
 def javacheck():
-    subprocess.run('python','javacheck.py')
+    subprocess.run(['python', 'javacheck.py'])
+    subprocess.check_output(['javacheck.py'], shell=True)
+    return javaversion
+
+javacheck()
 
 root=tk.Tk()
 root.title("Minecraft架設器")
 root.geometry("600x350")
+
+CheckVar17 = tk.IntVar()
+CheckVar8 = tk.IntVar()
 
 menu=tk.Menu(root)
 root.config(menu=menu)
@@ -102,10 +111,18 @@ pathbutton.grid(column=2,row=0,pady=5,padx=5)
 btn = tk.Button(root, text='下載',command=lambda: download())
 btn.pack(pady=5,ipady=5,ipadx=60)     
 
-java17check=tk.Checkbutton(root, text='java 17 (版本1.17以後)')
-java17check.pack()
-java8check=tk.Checkbutton(root, text='java 8 (版本1.16.4以前)')
-java8check.pack()
+javabtn = tk.Button(root, text='檢查java是否安裝',command=javacheck)
+javabtn.pack()
 
+
+
+java17check=tk.Checkbutton(root, text='java 17 (版本1.17以後)', var = CheckVar17)
+java17check.pack()
+if javaversion==17:
+    CheckVar17.set(True)
+java8check=tk.Checkbutton(root, text='java 8 (版本1.16.4以前)', var = CheckVar8)
+java8check.pack()
+if javaversion==8:
+    CheckVar8.set(True)
 
 root.mainloop()
