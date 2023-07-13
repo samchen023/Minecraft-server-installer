@@ -10,7 +10,7 @@ import subprocess
 
 APP_VERSION = "v0.0.1"
 
-javaversion=0
+javaversion = ""
 
 def selectPath():
     path_ = askdirectory()
@@ -42,7 +42,7 @@ def download():
     else:
         error = "没有找到所选链接！"
         print(error)
-    
+
 
 ##infowindow
 def createinfoWindow():
@@ -63,66 +63,58 @@ def callback(url):
     webbrowser.open_new(url)
 
 def javacheck():
-    subprocess.run(['python', 'javacheck.py'])
-    subprocess.check_output(['javacheck.py'], shell=True)
-    return javaversion
+    global javaversion
+    output = subprocess.check_output(['python', 'javacheck.py'], universal_newlines=True)
+    javaversion = output.strip()
+    javatext.delete('1.0', tk.END)  # Clear the existing text in the Text widget
+    javatext.insert('1.0', javaversion)
 
-javacheck()
-
-root=tk.Tk()
+root = tk.Tk()
 root.title("Minecraft架設器")
 root.geometry("600x350")
 
 CheckVar17 = tk.IntVar()
 CheckVar8 = tk.IntVar()
 
-menu=tk.Menu(root)
+menu = tk.Menu(root)
 root.config(menu=menu)
 
-submenu1=tk.Menu(activebackground="gray",tearoff=0)
+submenu1 = tk.Menu(activebackground="gray", tearoff=0)
 menu.add_cascade(label="File", menu=submenu1)
 
 submenu1.add_command(label="INFO", command=createinfoWindow)
 submenu1.add_command(label="EXIT", command=root.destroy)
 
 
-serverversion=tk.Label(root,text="版本選擇")
+serverversion = tk.Label(root, text="版本選擇")
 serverversion.pack()
 box = ttk.Combobox(root,
                     width=15,
                     values=['1.19.4','1.19.3','1.19.2','1.19.1','1.19','1.18.2','1.18.1','1.18','1.17.1','1.17','1.16.5','1.16.4','1.16.3','1.16.2','1.16.1','1.16','1.15.2','1.15.1','1.15','1.14.4','1.14.3','1.14.2','1.14.1','1.14','1.13.2','1.13.1','1.13','1.12.2','1.12.1','1.12','1.11.2','1.11.1','1.11','1.10.2','1.10.1','1.10','1.9.4','1.9.3','1.9.2','1.9.1','1.9',])
-version=box.get()
+version = box.get()
 box.pack(pady=5)
 
-path= StringVar()
+path = StringVar()
 
 frame = tk.Frame(root)
 frame.pack()
 
-pathlable=tk.Label(frame,text="目標路徑")
-pathlable.grid(column=0,row=0,padx=5) 
+pathlable = tk.Label(frame, text="目標路徑")
+pathlable.grid(column=0, row=0, padx=5)
 
-pathentry=tk.Entry(frame,textvariable=path,width=40)
-pathentry.grid(column=1,row=0,pady=5) 
+pathentry = tk.Entry(frame, textvariable=path, width=40)
+pathentry.grid(column=1, row=0, pady=5)
 
-pathbutton=tk.Button(frame,text="路徑選擇",command=selectPath)
-pathbutton.grid(column=2,row=0,pady=5,padx=5) 
+pathbutton = tk.Button(frame, text="路徑選擇", command=selectPath)
+pathbutton.grid(column=2, row=0, pady=5, padx=5)
 
-btn = tk.Button(root, text='下載',command=lambda: download())
-btn.pack(pady=5,ipady=5,ipadx=60)     
+btn = tk.Button(root, text='下載', command=lambda: download())
+btn.pack(pady=5, ipady=5, ipadx=60)
 
-javabtn = tk.Button(root, text='檢查java是否安裝',command=javacheck)
+javabtn = tk.Button(root, text='檢查java是否安裝', command=javacheck)
 javabtn.pack()
 
-
-
-java17check=tk.Checkbutton(root, text='java 17 (版本1.17以後)', var = CheckVar17)
-java17check.pack()
-if javaversion==17:
-    CheckVar17.set(True)
-java8check=tk.Checkbutton(root, text='java 8 (版本1.16.4以前)', var = CheckVar8)
-java8check.pack()
-if javaversion==8:
-    CheckVar8.set(True)
+javatext = tk.Text(root, height=3, width=20)
+javatext.pack(pady=5)
 
 root.mainloop()
