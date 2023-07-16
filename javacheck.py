@@ -19,5 +19,6 @@ java_version = get_java_version()
 
 if java_version:
     print(f"Java version: {java_version}")
+    print(java_version)
 else:
     print("Java is not installed.")

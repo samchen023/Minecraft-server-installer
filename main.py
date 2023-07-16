@@ -8,6 +8,7 @@ import webbrowser
 import os
 import subprocess
 
+
 APP_VERSION = "v0.0.1"
 
 javaversion = ""
@@ -65,9 +66,21 @@ def callback(url):
 def javacheck():
     global javaversion
     output = subprocess.check_output(['python', 'javacheck.py'], universal_newlines=True)
-    javaversion = output.strip()
-    javatext.delete('1.0', tk.END)  # Clear the existing text in the Text widget
-    javatext.insert('1.0', javaversion)
+    lines = output.strip().split('\n')
+    javaversion = lines[0].split(': ')[1]
+    return javaversion
+
+def javaversionwaring():
+    top= Toplevel(root)
+    top.geometry("750x250")
+    top.title("Child Window")
+    javatext = tk.Text(top, height=3, width=20)
+    javatext.pack(pady=5)
+    javatext.delete('1.0', tk.END)
+    javatext.insert('1.0',"Java version: ")
+    javatext.insert('2.0',javaversion)
+    javawarning=tk.Label(top,text="Minecraft版本大於1.17需要Java17 \n https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html \n Minecraft版本小於1.16.4需要Java8 \n https://www.java.com/zh-TW/download/ie_manual.jsp?locale=zh_TW")
+    javawarning.pack()
 
 root = tk.Tk()
 root.title("Minecraft架設器")
@@ -111,10 +124,8 @@ pathbutton.grid(column=2, row=0, pady=5, padx=5)
 btn = tk.Button(root, text='下載', command=lambda: download())
 btn.pack(pady=5, ipady=5, ipadx=60)
 
-javabtn = tk.Button(root, text='檢查java是否安裝', command=javacheck)
+javabtn = tk.Button(root, text='檢查java是否安裝', command=lambda:[javacheck(),javaversionwaring()])
 javabtn.pack()
 
-javatext = tk.Text(root, height=3, width=20)
-javatext.pack(pady=5)
 
 root.mainloop()
