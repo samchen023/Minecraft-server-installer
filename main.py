@@ -8,6 +8,7 @@ import webbrowser
 import os
 import subprocess
 from tkinter import font
+from PIL import Image, ImageTk
 
 
 APP_VERSION = "v0.0.1"
@@ -113,6 +114,11 @@ menu.add_cascade(label="File", menu=submenu1)
 submenu1.add_command(label="INFO", command=createinfoWindow)
 submenu1.add_command(label="EXIT", command=root.destroy)
 
+mclogo=Image.open('Minecraft.png')
+tk_img = ImageTk.PhotoImage(mclogo)
+
+mclogolabel = tk.Label(root, image=tk_img, width=400, height=81, anchor='nw')
+mclogolabel.pack()
 
 serverversion = tk.Label(root, text="版本選擇")
 serverversion.pack()
