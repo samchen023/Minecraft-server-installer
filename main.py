@@ -7,6 +7,7 @@ import wget
 import webbrowser
 import os
 import subprocess
+from tkinter import font
 
 
 APP_VERSION = "v0.0.1"
@@ -57,7 +58,7 @@ def createinfoWindow():
     link1 = Label(newWindow, text="Github", fg="blue", cursor="hand2")
     link1.pack()
     link1.bind(
-        "<Button-1>", lambda e: callback("https://github.com/samchen023/control-center")
+        "<Button-1>", lambda e: callback("https://github.com/samchen023/minecraft-server")
     )
 
 def callback(url):
@@ -73,14 +74,28 @@ def javacheck():
 def javaversionwaring():
     top= Toplevel(root)
     top.geometry("750x250")
-    top.title("Child Window")
+    top.title("Java 檢查")
+    label_font = font.Font(underline=True)
     javatext = tk.Text(top, height=3, width=20)
     javatext.pack(pady=5)
     javatext.delete('1.0', tk.END)
     javatext.insert('1.0',"Java version: ")
     javatext.insert('2.0',javaversion)
-    javawarning=tk.Label(top,text="Minecraft版本大於1.17需要Java17 \n https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html \n Minecraft版本小於1.16.4需要Java8 \n https://www.java.com/zh-TW/download/ie_manual.jsp?locale=zh_TW")
+    javawarning=tk.Label(top,text="Minecraft版本大於1.17需要Java17")
     javawarning.pack()
+    link1 = Label(top, text="Java17", fg="blue", cursor="hand2",font=label_font)
+    link1.pack()
+    link1.bind(
+        "<Button-1>", lambda e: callback("https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html")
+    )
+    javawarning2=tk.Label(top,text="Minecraft版本小於1.16.4需要Java8")
+    javawarning2.pack()
+    link2 = Label(top, text="Java8", fg="blue", cursor="hand2",font=label_font)
+    link2.pack()
+    link2.bind(
+        "<Button-1>", lambda e: callback("https://www.java.com/zh-TW/download/ie_manual.jsp?locale=zh_TW")
+    )
+    Button(top, text="離開", command=top.destroy).pack()
 
 root = tk.Tk()
 root.title("Minecraft架設器")
