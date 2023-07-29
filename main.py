@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from tkinter.tix import WINDOW
 from tkinter import *
 from tkinter.filedialog import askdirectory
@@ -105,9 +106,14 @@ def addbat():
     mcbat.close()
 
 def runbat1():
-    print(path_)
-    subprocess.run(['cd',path_,'open.bat'])
-    
+    error = "Error:"
+    subprocess.call([path_+'\open.bat'])
+    baterror=subprocess.getoutput([path_+'/open.bat'])
+    checkbaterror=baterror.split()
+    print(checkbaterror)
+    if error in checkbaterror:
+        messagebox.showerror('Error','Error code:\n'+baterror)
+
 root = tk.Tk()
 root.title("Minecraft架設器")
 root.geometry("600x350")
