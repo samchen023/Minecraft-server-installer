@@ -16,6 +16,7 @@ APP_VERSION = "v0.0.1"
 javaversion = ""
 
 def selectPath():
+    global path_
     path_ = askdirectory()
     if path_:
         path.set(path_)
@@ -74,7 +75,7 @@ def javacheck():
 
 def javaversionwaring():
     top= Toplevel(root)
-    top.geometry("750x250")
+    top.geometry("550x250")
     top.title("Java 檢查")
     label_font = font.Font(underline=True)
     javatext = tk.Text(top, height=3, width=20)
@@ -98,6 +99,15 @@ def javaversionwaring():
     )
     Button(top, text="離開", command=top.destroy).pack()
 
+def addbat():
+    mcbat = open(path_+'/open.bat','w+')
+    mcbat.write('java -Xmx4096M -Xms2048M -jar server.jar nogui')
+    mcbat.close()
+
+def runbat1():
+    print(path_)
+    subprocess.run(['cd',path_,'open.bat'])
+    
 root = tk.Tk()
 root.title("Minecraft架設器")
 root.geometry("600x350")
@@ -148,5 +158,7 @@ btn.pack(pady=5, ipady=5, ipadx=60)
 javabtn = tk.Button(root, text='檢查java是否安裝', command=lambda:[javacheck(),javaversionwaring()])
 javabtn.pack()
 
+runbtn = tk.Button(root, text='run', command=lambda:[addbat(),runbat1()])
+runbtn.pack(pady=5)
 
 root.mainloop()
