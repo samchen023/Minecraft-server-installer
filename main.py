@@ -102,12 +102,18 @@ def javaversionwaring():
 
 def addbat():
     mcbat = open(path_+'/open.bat','w+')
-    mcbat.write('java -Xmx4096M -Xms2048M -jar server.jar nogui')
+    mcbat.write('cd '+path_+'\n''java -Xmx4096M -Xms2048M -jar server.jar nogui')
     mcbat.close()
+
+def addeulabat():
+    import shutil
+    eulabat='eula.bat'
+    shutil.copyfile(eulabat,path_)
 
 def runbat1():
     error = "Error:"
-    subprocess.call([path_+'\open.bat'])
+    full_path = os.path.join(path_, 'open.bat')
+    subprocess.call([full_path])
     baterror=subprocess.getoutput([path_+'/open.bat'])
     checkbaterror=baterror.split()
     print(checkbaterror)
@@ -164,7 +170,7 @@ btn.pack(pady=5, ipady=5, ipadx=60)
 javabtn = tk.Button(root, text='檢查java是否安裝', command=lambda:[javacheck(),javaversionwaring()])
 javabtn.pack()
 
-runbtn = tk.Button(root, text='run', command=lambda:[addbat(),runbat1()])
+runbtn = tk.Button(root, text='run', command=lambda:[addbat(),runbat1(),addeulabat()])
 runbtn.pack(pady=5)
 
 root.mainloop()
